@@ -12,49 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Parser {
-
-
-    public void parseFile(String filePath) throws IOException {
-
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            String line;
-            List<DataLine> dataLines = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
-
-                String[] linePart = line.split(Validator.SPACE_SPLITER);
-
-                if (Validator.checkTypeQuestion_C(linePart[0])) {
-                    DataLine dataLine = new DataLine();
-                    dataLine.setService(constructService(linePart[1]));
-                    dataLine.setQuestionType(constructQuestionType(linePart[2]));
-                    dataLine.setResponseType(constructResponseType(linePart[3]));
-                    dataLine.setDateLine(linePart[4]);
-                    dataLine.setTime(Integer.parseInt(linePart[5]));
-                    dataLines.add(dataLine);
-
-                } else {
-
-                    QueryLine queryLine = new QueryLine();
-                    queryLine.setService(constructService(linePart[1]));
-                    queryLine.setQuestionType(constructQuestionType(linePart[1]));
-                    queryLine.setResponseType(constructResponseType(linePart[2]));
-                    queryLine.setDateRange(constructDateRange(linePart[3]));
-
-                }
-
-            }
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        int i = 10;
-    }
 
     private DateRange constructDateRange(String dateRangeString) {
             String dateFrom;
@@ -87,15 +49,17 @@ public class Parser {
         } else return null;
     }
 
-    private QuestionType constructQuestionType(String questionTypeline) {
+    private QuestionType constructQuestionType(String questionTypeLine) {
         QuestionType questionType = null;
-        if (Validator.checkTypeQuestion_C(questionTypeline)) {
+        if (Validator.checkTypeQuestion(questionTypeLine)) {
 
-            String[] questionTypeContains = questionTypeline.split(Validator.POINT);
+            String[] questionTypeContains = questionTypeLine.split(Validator.POINT);
             String questionTypeContain = questionTypeContains[0];
 
             if (questionTypeContains.length > 2) {
-                questionType = new QuestionType(questionTypeContain, new QuestionType.CategoryQuestionType(questionTypeContains[1], new QuestionType.CategoryQuestionType.SubCategory(questionTypeContains[2])));
+                questionType = new QuestionType(questionTypeContain,
+                        new QuestionType.CategoryQuestionType(questionTypeContains[1],
+                                new QuestionType.CategoryQuestionType.SubCategory(questionTypeContains[2])));
             } else if (questionTypeContains.length == 2) {
                 questionType = new QuestionType(questionTypeContain, new QuestionType.CategoryQuestionType(questionTypeContains[1], null));
             } else {
@@ -121,6 +85,44 @@ public class Parser {
 
     private Service.Variation createVariation(String variation) {
         return new Service.Variation(variation);
+    }
+
+    public void parseFile(String filePath) throws IOException {
+
+        Map<QueryLine, List<DataLine>> QueryLineandDataLine = new LinkedHashMap<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String line;
+            List<DataLine> dataLines = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+
+                String[] linePart = line.split(Validator.SPACE_SPLITER);
+
+                if (Validator.checkTypeLine_C(linePart[0])) {
+                    DataLine dataLine = new DataLine();
+                    dataLine.setService(constructService(linePart[1]));
+                    dataLine.setQuestionType(constructQuestionType(linePart[2]));
+                    dataLine.setResponseType(constructResponseType(linePart[3]));
+                    dataLine.setDateLine(linePart[4]);
+                    dataLine.setTime(Integer.parseInt(linePart[5]));
+                    dataLines.add(dataLine);
+
+                } else {
+
+                    QueryLine queryLine = new QueryLine();
+                    queryLine.setService(constructService(linePart[1]));
+                    queryLine.setQuestionType(constructQuestionType(linePart[2]));
+                    queryLine.setResponseType(constructResponseType(linePart[3]));
+                    queryLine.setDateRange(constructDateRange(linePart[4]));
+                    QueryLineandDataLine.put(queryLine,dataLines);
+                }
+
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }
