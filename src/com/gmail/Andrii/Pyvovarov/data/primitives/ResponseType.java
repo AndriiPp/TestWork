@@ -1,5 +1,7 @@
 package com.gmail.Andrii.Pyvovarov.data.primitives;
 
+import java.util.Objects;
+
 public class ResponseType {
     private String responceType;
 
@@ -15,5 +17,17 @@ public class ResponseType {
         this.responceType = responceType;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        ResponseType lineType = (ResponseType) obj;
+        return lineType.getResponceType().equals(this.getResponceType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getResponceType());
+    }
 
 }

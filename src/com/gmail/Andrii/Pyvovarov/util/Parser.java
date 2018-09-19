@@ -52,10 +52,8 @@ public class Parser {
     private QuestionType constructQuestionType(String questionTypeLine) {
         QuestionType questionType = null;
         if (Validator.checkTypeQuestion(questionTypeLine)) {
-
             String[] questionTypeContains = questionTypeLine.split(Validator.POINT);
             String questionTypeContain = questionTypeContains[0];
-
             if (questionTypeContains.length > 2) {
                 questionType = new QuestionType(questionTypeContain,
                         new QuestionType.CategoryQuestionType(questionTypeContains[1],

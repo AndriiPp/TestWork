@@ -1,5 +1,9 @@
 package com.gmail.Andrii.Pyvovarov.data.primitives;
 
+import com.sun.org.apache.xpath.internal.operations.Equals;
+
+import java.util.Objects;
+
 public class Service {
     private String service;
     private Variation variation;
@@ -49,4 +53,16 @@ public class Service {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this)return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+        Service service = (Service) obj;
+        return  service.getService().equals(this.getService());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getService());
+    }
 }
