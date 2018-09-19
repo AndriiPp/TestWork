@@ -1,6 +1,17 @@
 package com.gmail.Andrii.Pyvovarov.data.primitives;
 
 public class Service {
+    private String service;
+    private Variation variation;
+
+    public Service(String service) {
+        this.service = service;
+    }
+
+    public Service(String service, Variation variation) {
+        this.service = service;
+        this.variation = variation;
+    }
 
     public String getService() {
         return service;
@@ -18,11 +29,14 @@ public class Service {
         this.variation = variation;
     }
 
-    private String service;
-    private Variation variation;
+
 
     public static class Variation {
         private String type;
+
+        public Variation(String type) {
+            this.type = type;
+        }
 
         public String getType() {
             return type;

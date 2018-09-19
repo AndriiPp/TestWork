@@ -4,6 +4,16 @@ public class DateRange {
     private String DateStart;
     private String DateEnd;
 
+    public DateRange(String dateStart, String dateEnd) {
+        DateStart = dateStart;
+        DateEnd = dateEnd;
+    }
+
+    public DateRange(String dateStart) {
+
+        DateStart = dateStart;
+    }
+
     public String getDateStart() {
         return DateStart;
     }
