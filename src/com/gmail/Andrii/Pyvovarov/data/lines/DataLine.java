@@ -9,13 +9,15 @@ public class DataLine extends Line {
     private String dateLine;
     private int time;
 
+
     public DataLine(Service service, QuestionType questionType, ResponseType responseType) {
         super(service, questionType, responseType);
     }
 
-    public DataLine(){
+    public DataLine() {
 
     }
+
     public int getTime() {
         return time;
     }
@@ -23,9 +25,6 @@ public class DataLine extends Line {
     public void setTime(int time) {
         this.time = time;
     }
-
-
-
 
 
     public String getDateLine() {

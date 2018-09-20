@@ -9,6 +9,16 @@ public class QueryLine extends Line {
     private String queryLine;
     private DateRange dateRange;
 
+    public String getAnswerAverageTime() {
+        return answerAverageTime;
+    }
+
+    public void setAnswerAverageTime(String answerAverageTime) {
+        this.answerAverageTime = answerAverageTime;
+    }
+
+    private String answerAverageTime;
+
     public DateRange getDateRange() {
         return dateRange;
     }

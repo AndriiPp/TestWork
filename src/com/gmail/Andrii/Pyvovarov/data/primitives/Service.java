@@ -50,7 +50,6 @@ public class Service {
             this.type = type;
         }
 
-
     }
 
     @Override

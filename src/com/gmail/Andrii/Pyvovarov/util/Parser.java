@@ -19,19 +19,19 @@ import java.util.Map;
 public class Parser {
 
     private DateRange constructDateRange(String dateRangeString) {
-            String dateFrom;
-            String dateTo;
-            String[] datePeriods = dateRangeString.split(Validator.DATE_SPLITER);
-            DateRange datePeriod = null;
-            if (datePeriods.length == 1) {
-                dateFrom = datePeriods[0];
-                datePeriod = new DateRange(dateFrom, null);
-                return datePeriod;
-            } else {
-                dateFrom = datePeriods[0];
-                dateTo = datePeriods[1];
-            }
-            return new DateRange(dateFrom, dateTo);
+        String dateFrom;
+        String dateTo;
+        String[] datePeriods = dateRangeString.split(Validator.DATE_SPLITER);
+        DateRange datePeriod = null;
+        if (datePeriods.length == 1) {
+            dateFrom = datePeriods[0];
+            datePeriod = new DateRange(dateFrom, null);
+            return datePeriod;
+        } else {
+            dateFrom = datePeriods[0];
+            dateTo = datePeriods[1];
+        }
+        return new DateRange(dateFrom, dateTo);
 
     }
 
@@ -85,9 +85,9 @@ public class Parser {
         return new Service.Variation(variation);
     }
 
-    public void parseFile(String filePath) throws IOException {
+    public Map<QueryLine, List<DataLine>> parseFile(String filePath) throws IOException {
 
-        Map<QueryLine, List<DataLine>> QueryLineandDataLine = new LinkedHashMap<>();
+        Map<QueryLine, List<DataLine>> queryLineandDataLine = new LinkedHashMap<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
@@ -112,7 +112,7 @@ public class Parser {
                     queryLine.setQuestionType(constructQuestionType(linePart[2]));
                     queryLine.setResponseType(constructResponseType(linePart[3]));
                     queryLine.setDateRange(constructDateRange(linePart[4]));
-                    QueryLineandDataLine.put(queryLine,dataLines);
+                    queryLineandDataLine.put(queryLine, dataLines);
                 }
 
             }
@@ -121,6 +121,7 @@ public class Parser {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return queryLineandDataLine;
     }
 
 }
