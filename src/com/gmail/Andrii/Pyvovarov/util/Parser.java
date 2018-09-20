@@ -54,11 +54,11 @@ public class Parser {
         if (Validator.checkTypeQuestion(questionTypeLine)) {
             String[] questionTypeContains = questionTypeLine.split(Validator.POINT);
             String questionTypeContain = questionTypeContains[0];
-            if (questionTypeContains.length > 2) {
+            if (questionTypeContains.length > Constans.COUNT_ELEMENT_QUERY) {
                 questionType = new QuestionType(questionTypeContain,
                         new QuestionType.CategoryQuestionType(questionTypeContains[1],
                                 new QuestionType.CategoryQuestionType.SubCategory(questionTypeContains[2])));
-            } else if (questionTypeContains.length == 2) {
+            } else if (questionTypeContains.length == Constans.COUNT_ELEMENT_QUERY) {
                 questionType = new QuestionType(questionTypeContain, new QuestionType.CategoryQuestionType(questionTypeContains[1], null));
             } else {
                 questionType = new QuestionType(questionTypeContain);
@@ -114,7 +114,6 @@ public class Parser {
                     queryLine.setDateRange(constructDateRange(linePart[4]));
                     queryLineandDataLine.put(queryLine, dataLines);
                 }
-
             }
 
 

@@ -5,10 +5,9 @@ import com.gmail.Andrii.Pyvovarov.data.lines.QueryLine;
 import com.gmail.Andrii.Pyvovarov.data.primitives.QuestionType;
 import com.gmail.Andrii.Pyvovarov.data.primitives.ResponseType;
 import com.gmail.Andrii.Pyvovarov.data.primitives.Service;
+import com.gmail.Andrii.Pyvovarov.util.Constans;
 import com.gmail.Andrii.Pyvovarov.util.Validator;
 
-import javax.swing.text.html.parser.Entity;
-import java.security.KeyStore;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +18,7 @@ import java.util.Map;
 
 public class Services {
 
-    private static final String ASTERISK = "*";
-    private List result;
+    private List<String> result;
 
     public List getResult() {
         return result;
@@ -32,36 +30,37 @@ public class Services {
 
 
     public void matching(Map<QueryLine, List<DataLine>> data) {
-
-
         result = new ArrayList<String>();
+
         for (Map.Entry<QueryLine, List<DataLine>> entry : data.entrySet()) {
             int countMached = 0;
             int sumSec = 0;
+
             for (DataLine dataLine : entry.getValue()) {
                 if (compareDateLineQueryLine(dataLine, entry.getKey())) {
                     sumSec += dataLine.getTime();
                     countMached++;
                 }
             }
+
             if (countMached != 0) {
-                result.add(sumSec / countMached);
+                result.add(Integer.toString(sumSec / countMached));
             } else {
-                entry.getKey().setAnswerAverageTime("-");
-                result.add("-");
+                entry.getKey().setAnswerAverageTime(Constans.DASH);
+                result.add(Constans.DASH);
             }
         }
 
 }
 
     private boolean compareTypeQuestion(QuestionType questionTypeD, QuestionType questionTypeC) {
-        return questionTypeD.getQuestionType().equals(ASTERISK) ||
+        return questionTypeD.getQuestionType().equals(Constans.ASTERISK) ||
                 questionTypeD.equals(questionTypeC);
 
     }
 
     private boolean compareTypeServise(Service serviceD, Service serviceC) {
-        return serviceD.getService().equals(ASTERISK) || serviceD.equals(serviceC);
+        return serviceD.getService().equals(Constans.ASTERISK) || serviceD.equals(serviceC);
     }
 
     private boolean compareDate(String dateC, String dateStart, String dateEnd) {
@@ -86,7 +85,7 @@ public class Services {
 
     private boolean compareTypeResponse(ResponseType responseTypeD, ResponseType responseTypeC) {
 
-        return responseTypeD.getResponceType().equals(ASTERISK) || responseTypeD.equals(responseTypeC);
+        return responseTypeD.getResponceType().equals(Constans.ASTERISK) || responseTypeD.equals(responseTypeC);
     }
 
     private boolean compareDateLineQueryLine(DataLine dataLine, QueryLine queryLine) {
@@ -95,12 +94,4 @@ public class Services {
                 && compareTypeResponse(dataLine.getResponseType(), queryLine.getResponseType())
                 && compareDate(dataLine.getDateLine(), queryLine.getDateRange().getDateStart(), queryLine.getDateRange().getDateEnd());
     }
-
-    /*private boolean compareDateLineQueryLine(DataLine dataLine, QueryLine queryLine) {
-        Boolean BOL1 = compareTypeServise(dataLine.getService(), queryLine.getService());
-        Boolean BOL2 = compareTypeQuestion(queryLine.getQuestionType(), dataLine.getQuestionType());
-        Boolean BOL3 = compareTypeResponse(dataLine.getResponseType(), queryLine.getResponseType());
-        Boolean BOL4 = compareDate(dataLine.getDateLine(), queryLine.getDateRange().getDateStart(), queryLine.getDateRange().getDateEnd());
-        return true;
-    }*/
 }
