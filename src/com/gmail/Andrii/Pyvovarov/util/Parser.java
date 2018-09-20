@@ -7,16 +7,15 @@ import com.gmail.Andrii.Pyvovarov.data.primitives.QuestionType;
 import com.gmail.Andrii.Pyvovarov.data.primitives.ResponseType;
 import com.gmail.Andrii.Pyvovarov.data.primitives.Service;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Parser {
+
+    private int countLines;
 
     private DateRange constructDateRange(String dateRangeString) {
         String dateFrom;
@@ -92,29 +91,31 @@ public class Parser {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
             List<DataLine> dataLines = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
+            countLines = Integer.parseInt(reader.readLine());
+            if (countLines <= 100.000 && countLines > 0)
+                while ((line = reader.readLine()) != null) {
 
-                String[] linePart = line.split(Validator.SPACE_SPLITER);
+                    String[] linePart = line.split(Validator.SPACE_SPLITER);
 
-                if (Validator.checkTypeLine_C(linePart[0])) {
-                    DataLine dataLine = new DataLine();
-                    dataLine.setService(constructService(linePart[1]));
-                    dataLine.setQuestionType(constructQuestionType(linePart[2]));
-                    dataLine.setResponseType(constructResponseType(linePart[3]));
-                    dataLine.setDateLine(linePart[4]);
-                    dataLine.setTime(Integer.parseInt(linePart[5]));
-                    dataLines.add(dataLine);
+                    if (Validator.checkTypeLine_C(linePart[0])) {
+                        DataLine dataLine = new DataLine();
+                        dataLine.setService(constructService(linePart[1]));
+                        dataLine.setQuestionType(constructQuestionType(linePart[2]));
+                        dataLine.setResponseType(constructResponseType(linePart[3]));
+                        dataLine.setDateLine(linePart[4]);
+                        dataLine.setTime(Integer.parseInt(linePart[5]));
+                        dataLines.add(dataLine);
 
-                } else {
+                    } else {
 
-                    QueryLine queryLine = new QueryLine();
-                    queryLine.setService(constructService(linePart[1]));
-                    queryLine.setQuestionType(constructQuestionType(linePart[2]));
-                    queryLine.setResponseType(constructResponseType(linePart[3]));
-                    queryLine.setDateRange(constructDateRange(linePart[4]));
-                    queryLineandDataLine.put(queryLine, dataLines);
+                        QueryLine queryLine = new QueryLine();
+                        queryLine.setService(constructService(linePart[1]));
+                        queryLine.setQuestionType(constructQuestionType(linePart[2]));
+                        queryLine.setResponseType(constructResponseType(linePart[3]));
+                        queryLine.setDateRange(constructDateRange(linePart[4]));
+                        queryLineandDataLine.put(queryLine, dataLines);
+                    }
                 }
-            }
 
 
         } catch (FileNotFoundException e) {
